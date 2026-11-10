@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Phoenix College Council Nomination</title>
+<style>
+:root{--bg:#fff8ec;--card:#fff;--ink:#222;--accent:#e8590c;--ok:#2b9348}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:"Trebuchet MS",Verdana,Arial,sans-serif;font-size:22px;text-align:center;padding:12px}
+h1{font-size:44px;line-height:1.15;margin:10px 0;display:inline}
+.q{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;margin:12px 0;background:var(--card);border:5px solid var(--accent);border-radius:30px;padding:14px 20px}
+.say{background:var(--accent);color:#fff;border:0;border-radius:50%;width:84px;height:84px;font-size:44px}
+.bar{display:flex;justify-content:space-between;gap:8px;font-weight:bold;margin-bottom:6px}
+.pill{background:var(--card);border:3px solid var(--accent);border-radius:30px;padding:6px 16px}
+.steps{display:flex;justify-content:center;gap:8px;margin:8px 0}
+.dot{width:46px;height:46px;border-radius:50%;background:var(--card);border:3px solid #aaa;display:flex;align-items:center;justify-content:center;font-weight:bold}
+.dot.on{background:var(--accent);color:#fff;border-color:var(--accent)}.dot.done{background:var(--ok);color:#fff;border-color:var(--ok)}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:10px 0}
+button{font:inherit;cursor:pointer;color:inherit}
+.tab{border:4px solid var(--c);background:var(--card);border-radius:18px;padding:12px 16px;font-weight:bold;min-height:64px}
+.tab.sel{background:var(--c);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;max-width:1000px;margin:auto}
+.stu{border:5px solid var(--c);background:var(--card);border-radius:24px;padding:10px 6px;min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.stu.sel{background:var(--c);color:#fff;animation:pop .35s}
+.av{font-size:64px;line-height:1}.nm{font-weight:bold;font-size:20px;line-height:1.15}
+.adj{border:5px solid var(--accent);background:var(--card);border-radius:24px;padding:10px;min-height:130px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.adj.sel{background:var(--ok);border-color:var(--ok);color:#fff;animation:pop .35s}
+.adj .av{font-size:54px}
+.big{background:var(--ok);color:#fff;border:0;border-radius:40px;padding:18px 40px;font-size:28px;font-weight:bold;margin:16px 6px;min-height:72px}
+.big.alt{background:var(--accent)}.big:disabled{opacity:.35}
+textarea{width:100%;max-width:700px;height:170px;font:inherit;font-size:26px;padding:14px;border:5px solid var(--accent);border-radius:20px}
+.msg{font-size:26px;font-weight:bold;margin:8px}
+@keyframes pop{50%{transform:scale(1.12)}}
+.slip{background:#fff;color:#000;border:6px dashed #e8590c;border-radius:20px;max-width:620px;margin:12px auto;padding:20px;text-align:center}
+.slip h2{margin:0;font-size:28px}.slip .av{font-size:110px}.slip .big-nm{font-size:44px;font-weight:bold;margin:4px}
+.slip .reasons{font-size:28px;line-height:1.6}.slip .from{font-size:22px;margin-top:14px;text-align:left}
+#slipwrap{display:none}
+@media print{body>*:not(#slipwrap){display:none!important}#slipwrap{display:block!important}body{background:#fff;padding:0}.slip{border-color:#000}}
+</style></head><body>
+<div id="app"></div><div id="slipwrap"></div>
+<script>
+/* TEACHER: paste your Google Apps Script web app URL between the quotes */
+const SHEET_URL="PASTE_YOUR_WEB_APP_URL_HERE";
+
+const CL=[{n:"Darren's Class",c:"#e03131",e:"🔴",s:["Abdullah Al Fahim","Rahi Anan Mahboob","Tahseen Kamali","Siam Mohammed","Mely Mia","Hassan Miah","Shakil Uddin","Seayum Chowdhury","Camila Ali"]},
+{n:"Frank's Class",c:"#1971c2",e:"🔵",s:["Abdul Waheed","Ayan Jama","Aysha Uddin","Ethan Sandiford","Laely Begum","Reshma Miah","Siyam Ahmed","Tavazzul Hoque","Tobechi Nwachuka","Sajil Reza"]},
+{n:"Mo's Class",c:"#2b8a3e",e:"🟢",s:["Abu Taher","Callum Bance","Romaisa Sibous","Samad Ahmed","Tejan Coker","Yusuf Rashid","Abdulshakur Abdullah","Adam Day","Sikelele Khafula","Fatima Ilma"]},
+{n:"Elena's Class",c:"#9c36b5",e:"🟣",s:["Ibrahim Ahmed Kha","Chirag Sagar","Riha Akter","Francois Pollimis","Yousef Rahman","Labib Khan","Yacqoup Ali","Ibrahim Mahamud","Joe Walsh","Khadija Belal","Hajera Khanom"]},
+{n:"QMUL Interns",c:"#e67700",e:"🟠",s:["Victoria McCready","Tolga Demir","Saif Ahmed","Nadeemah Ali","Muaaz Ahmed","Aqeel Umar Ali-Syed","Micah Samuel","Paul Agius","Sufiya Akther","Yusuf Khandakar"]},
+{n:"Amazon Interns",c:"#0b7285",e:"🔷",s:["Aaron Karim Madbar Lozano","Jay Brockett","Dylan Searle","Hayden Crossley","Naim Kamali","Abdul Fahim","Aaron Watson"]},
+{n:"Clyde and Co Interns",c:"#c2255c",e:"🩷",s:["Mohammed Sayed Uddin","Muscab Ahmed","Maxwell Leech","Aliyah Hoque"]}];
+const PAL=["#5f3dc4","#1971c2","#2b8a3e","#e8590c","#c2255c","#0b7285","#862e9c","#e67700","#495057","#d6336c"];
+const HAIR=["",'<path d="M30 38Q30 18 50 18Q70 18 70 38L73 72L27 72Z"/>','<circle cx="50" cy="15" r="9"/>','<path d="M27 40Q27 15 50 15Q73 15 73 40Q73 62 63 72L37 72Q27 62 27 40Z"/>','<path d="M31 33Q50 10 69 33Z"/><rect x="62" y="29" width="24" height="6" rx="3"/>','<circle cx="50" cy="34" r="25"/>','<path d="M33 42Q50 70 67 42Z"/>','<circle cx="76" cy="42" r="8"/><path d="M66 32L78 38L70 50Z"/>'];
+function sil(i){const c=PAL[(i*3+Math.floor(i/10))%PAL.length],h=HAIR[(i*5+Math.floor(i/8))%HAIR.length];return `<svg viewBox="0 0 100 100" style="width:1em;height:1em;vertical-align:middle" aria-hidden="true"><circle cx="50" cy="50" r="49" fill="${c}" fill-opacity=".18"/><g fill="${c}">${h}<circle cx="50" cy="40" r="17"/><path d="M17 98Q17 66 50 66Q83 66 83 98Z"/></g></svg>`}
+const ST=[];CL.forEach((c,ci)=>c.s.forEach(n=>ST.push({n,ci,a:sil(ST.length),id:ST.length})));
+const ADJ=[["Kind","🤗"],["Friendly","😊"],["Helpful","🤝"],["Funny","😄"],["Brave","🦸"],["Caring","💛"],["Hard-working","💪"],["Fair","⚖️"],["Good listener","👂"],["Happy","🌞"],["Polite","🙏"],["Smart","💡"]];
+const fresh=()=>({step:0,tab:0,me:null,who:null,adj:[],comment:"",stars:0,t0:Date.now(),status:"",saving:false});
+let S=fresh();
+const $=id=>document.getElementById(id);
+function say(t){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang="en-GB";u.rate=.85;speechSynthesis.speak(u)}catch(e){}}
+function question(){const w=S.who!=null?ST[S.who].n:"";return ["Who are you? Tap your name.","Who do you choose for the College Council? Tap their name.",`Why do you choose ${w}? They are... Pick up to three words.`,"Do you want to say more? You can type, or you can skip.","Well done! You made your nomination."][S.step]}
+function tm(){const s=Math.floor((Date.now()-S.t0)/1000);return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")}
+setInterval(()=>{const e=$("tm");if(e&&S.step<4)e.textContent="⏱️ "+tm()},1000);
+function head(){return `<div class="bar"><span class="pill" id="tm">⏱️ ${tm()}</span><span class="pill">⭐ ${S.stars}</span></div><div class="steps">${["1","2","3","4","⭐"].map((x,i)=>`<div class="dot ${i<S.step?"done":i==S.step?"on":""}">${i<S.step?"✓":x}</div>`).join("")}</div>`}
+function Q(t){return `<div class="q"><button class="say" onclick="say(question())" aria-label="Read aloud">🔊</button><h1>${t}</h1></div>`}
+function picker(sel,fn){return `<div class="tabs">${CL.map((c,i)=>`<button class="tab ${S.tab==i?"sel":""}" style="--c:${c.c}" onclick="S.tab=${i};render(false)">${c.e} ${c.n}</button>`).join("")}</div><div class="grid">${ST.filter(s=>s.ci==S.tab).map(s=>`<button class="stu ${sel==s.id?"sel":""}" style="--c:${CL[s.ci].c}" onclick="${fn}(${s.id})"><span class="av">${s.a}</span><span class="nm">${s.n}</span></button>`).join("")}</div>`}
+function pickMe(i){S.me=i;say(ST[i].n);render(false)}
+function pickWho(i){S.who=i;say(ST[i].n);render(false)}
+function togAdj(i){const p=S.adj.indexOf(i);if(p>=0)S.adj.splice(p,1);else if(S.adj.length<3){S.adj.push(i);say(ADJ[i][0])}else say("Three is enough");render(false)}
+function go(n){S.stars++;S.step=n;window.scrollTo(0,0);if(n==4){$("slipwrap").innerHTML=`<div class="slip">${slipHTML()}</div>`;save()}render(true)}
+function back(n){S.step=n;render(true)}
+function render(speak){let h=head();
+if(S.step==0)h+=Q("Who are you? 👋")+picker(S.me,"pickMe")+`<button class="big" ${S.me==null?"disabled":""} onclick="go(1)">Next ➡️</button>`;
+else if(S.step==1)h+=Q("Who do you choose? 🗳️")+picker(S.who,"pickWho")+`<button class="big alt" onclick="back(0)">⬅️ Back</button><button class="big" ${S.who==null?"disabled":""} onclick="go(2)">Next ➡️</button>`;
+else if(S.step==2){const w=ST[S.who];h+=Q(`Why ${w.n}? They are... (${S.adj.length}/3)`)+`<div class="grid">${ADJ.map((a,i)=>`<button class="adj ${S.adj.includes(i)?"sel":""}" onclick="togAdj(${i})"><span class="av">${a[1]}</span><span class="nm">${a[0]}</span></button>`).join("")}</div><button class="big alt" onclick="back(1)">⬅️ Back</button><button class="big" ${!S.adj.length?"disabled":""} onclick="go(3)">Next ➡️</button>`}
+else if(S.step==3)h+=Q("Want to say more? ✏️")+`<p class="msg">(You do not have to)</p><textarea id="cm" oninput="S.comment=this.value" placeholder="Type here...">${S.comment}</textarea><br><button class="big alt" onclick="back(2)">⬅️ Back</button><button class="big" onclick="go(4)">${S.comment.trim()?"Finish 🎉":"Skip ⏭️"}</button>`;
+else{const w=ST[S.who],m=ST[S.me];h+=Q(`Well done, ${m.n}! 🌟`)+`<div class="slip" style="margin:8px auto">${slipHTML()}</div><div class="pill" style="display:inline-block;margin:10px;font-size:24px"><b>Summary</b><br>⭐ Stars: ${S.stars}<br>⏱️ Time: ${tm()}<br>🗳️ Chosen: ${w.n}<br>💬 ${S.adj.map(i=>ADJ[i][0]).join(", ")}</div><p class="msg">${S.status}</p>${S.status.startsWith("⚠️")?`<button class="big alt" onclick="save()">🔁 Try saving again</button>`:""}<br><button class="big" onclick="window.print()">🖨️ Print slip</button><button class="big alt" onclick="window.print()">📄 Save as PDF</button><p class="msg">📸 You can also take a screenshot!</p><button class="big alt" onclick="S=fresh();render(true)">🔄 Start again</button>`}
+$("app").innerHTML=h;if(speak!==false)setTimeout(()=>say(question()),300)}
+function slipHTML(){const w=ST[S.who],m=ST[S.me],c=S.comment.trim().replace(/[<>&]/g,"");return `<h2>🔥 Phoenix College Council 🔥</h2><p style="font-size:24px;margin:6px">I nominate</p><div class="av">${w.a}</div><div class="big-nm">${w.n}</div><p style="font-size:24px;margin:6px">${CL[w.ci].n}</p><p style="font-size:24px;margin:10px 0 0">They are:</p><div class="reasons">${S.adj.map(i=>ADJ[i][1]+" "+ADJ[i][0]).join("<br>")}</div>${c?`<p style="font-size:22px;font-style:italic">"${c}"</p>`:""}<div class="from">From: <b>${m.n}</b> ${m.a}<br>Date: ${new Date().toLocaleDateString("en-GB")}</div>`}
+async function save(){if(S.saving)return;if(!SHEET_URL.startsWith("https://")){S.status="⚠️ Not connected to the sheet yet (teacher: see setup)";render(false);return}
+S.saving=true;S.status="⏳ Saving...";render(false);
+const w=ST[S.who],m=ST[S.me],d={voter:m.n,voterGroup:CL[m.ci].n,nominee:w.n,nomineeGroup:CL[w.ci].n,reasons:S.adj.map(i=>ADJ[i][0]).join(", "),comment:S.comment.trim(),seconds:Math.floor((Date.now()-S.t0)/1000)};
+try{await fetch(SHEET_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(d)});S.status="✅ Saved! Thank you!";S.saving=false;S.saved=true}catch(e){S.status="⚠️ Not saved. Please try again";S.saving=false}render(false)}
+render(true);
+</script></body></html>
